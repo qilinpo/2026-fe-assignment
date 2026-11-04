@@ -1,8 +1,11 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup } from '@testing-library/react'
+import { cleanup, configure } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, beforeEach } from 'vitest'
 import { handlers, resetMockDb } from '../mocks/handlers'
+
+// Every mock response takes ~500 ms; give async queries some headroom.
+configure({ asyncUtilTimeout: 3000 })
 
 export const server = setupServer(...handlers)
 

@@ -12,6 +12,12 @@ body,
   min-height: 100%;
 }
 
+html {
+  /* Reserve the scrollbar's space so the page doesn't shift sideways when
+     loaded content makes it scrollable. */
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -58,12 +64,28 @@ p {
   width: 1px;
 }
 
+/* ---- Surfaces ---- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: var(--space-6);
+  }
+}
+
 /* ---- Layout ---- */
 
 .container {
   margin: 0 auto;
   max-width: calc(var(--container) + 2 * var(--gutter-mobile));
-  padding: 0 var(--gutter-mobile);
+  padding-inline: var(--gutter-mobile);
   width: 100%;
 }
 
@@ -79,7 +101,7 @@ p {
 
   .container {
     max-width: calc(var(--container) + 2 * var(--gutter));
-    padding: 0 var(--gutter);
+    padding-inline: var(--gutter);
   }
 }
 

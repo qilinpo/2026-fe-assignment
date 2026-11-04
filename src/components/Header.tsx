@@ -45,9 +45,19 @@ export function Header() {
         <div className="header__actions">
           <SegmentSwitch className="header__segment" />
           <ThemeToggle />
-          <span className="header__avatar" aria-label={customer.data ? `${customer.data.firstName} ${customer.data.lastName}` : undefined}>
-            {initials ?? <Skeleton width={20} height={12} />}
-          </span>
+          {customer.data ? (
+            <span
+              className="header__avatar"
+              role="img"
+              aria-label={`${customer.data.firstName} ${customer.data.lastName}`}
+            >
+              <span aria-hidden="true">{initials}</span>
+            </span>
+          ) : (
+            <span className="header__avatar">
+              <Skeleton width={20} />
+            </span>
+          )}
         </div>
       </div>
     </header>
