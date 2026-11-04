@@ -1,6 +1,6 @@
 # Meridian Banking — Po Qi Lin
 
-- Deployed: **TODO — add URL after deploying**
+- Deployed: [https://sweet-bubblegum-4f9fb2.netlify.app/](https://sweet-bubblegum-4f9fb2.netlify.app/)
 - Run locally: `npm install && npm run dev` (Node 22, see `.nvmrc`)
 
 ```bash
