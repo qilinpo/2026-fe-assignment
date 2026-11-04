@@ -1,39 +1,25 @@
-import { useQuery } from '@tanstack/react-query'
-import { apiFetch } from './api/client'
-import type { Health } from './api/types'
+import { useState } from 'react'
+import { Header } from './components/Header'
+import { DebugPanel } from './debug/DebugPanel'
+import { Dashboard } from './features/dashboard/Dashboard'
+import { TransferDialog } from './features/transfer/TransferDialog'
+
+// Demo controls for reviewers, only with ?debug in the page URL.
+const showDebug = new URLSearchParams(window.location.search).has('debug')
 
 export default function App() {
-  const health = useQuery({
-    queryKey: ['health'],
-    queryFn: () => apiFetch<Health>('/api/health'),
-    retry: false,
-  })
-
-  const status = health.isPending
-    ? 'checking…'
-    : health.isError
-      ? 'not connected'
-      : 'connected'
+  const [isTransferOpen, setTransferOpen] = useState(false)
 
   return (
-    <div className="starter">
-      <header className="starter-header">
-        <strong>Meridian</strong>
-        <span>Take-home starter</span>
-      </header>
-
-      <main className="starter-main">
-        <h1>Build the dashboard and transfer flow</h1>
-        <p>
-          Start with <code>README.md</code>, then read{' '}
-          <code>brief/candidate-brief.md</code>. Replace this screen with your
-          app.
-        </p>
-
-        <p className="status" role="status">
-          Mock API: {status}
-        </p>
+    <>
+      <Header />
+      <main className="container app-main">
+        <Dashboard onNewTransfer={() => setTransferOpen(true)} />
       </main>
-    </div>
+      {showDebug && <DebugPanel />}
+      {isTransferOpen && (
+        <TransferDialog onClose={() => setTransferOpen(false)} />
+      )}
+    </>
   )
 }

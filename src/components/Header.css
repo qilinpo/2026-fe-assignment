@@ -1,0 +1,100 @@
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+}
+
+.header__inner {
+  align-items: center;
+  display: flex;
+  gap: var(--space-6);
+  height: var(--header-height);
+}
+
+.header__brand {
+  align-items: center;
+  color: var(--text);
+  display: inline-flex;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  text-decoration: none;
+}
+
+.header__wordmark {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.header__nav {
+  display: none;
+}
+
+.header__nav ul {
+  display: flex;
+  gap: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header__link {
+  align-items: center;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  display: inline-flex;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  text-decoration: none;
+}
+
+.header__link[aria-current='page'] {
+  color: var(--text);
+  font-weight: var(--weight-semibold);
+}
+
+.header__link[aria-disabled='true'] {
+  color: var(--text-subtle);
+  cursor: not-allowed;
+}
+
+.header__actions {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+/* On small screens the segment switch moves under the greeting. */
+.header__segment {
+  display: none;
+}
+
+.header__avatar {
+  align-items: center;
+  background: var(--brand-soft);
+  border-radius: var(--radius-full);
+  color: var(--brand);
+  display: inline-flex;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  height: var(--tap-target);
+  justify-content: center;
+  width: var(--tap-target);
+}
+
+@media (min-width: 640px) {
+  .header__segment {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header__nav {
+    display: block;
+  }
+}

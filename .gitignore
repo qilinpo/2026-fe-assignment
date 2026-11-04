@@ -6,3 +6,10 @@ coverage/
 *.log
 .env
 .env.*
+
+.agents/
+.claude/
+
+# Playwright
+test-results/
+playwright-report/

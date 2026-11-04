@@ -1,0 +1,379 @@
+/* ---- Page layout ---- */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  /* Leave room for the fixed New transfer bar on mobile. */
+  padding-bottom: calc(var(--tap-target) + var(--space-8) + env(safe-area-inset-bottom));
+}
+
+.dashboard__greeting {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dashboard__title {
+  font-size: var(--text-2xl);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+.dashboard__grid {
+  display: grid;
+  gap: var(--space-6);
+  /* minmax(0, …) stops long content from widening the column. */
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dashboard__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.section-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-3);
+}
+
+/* Mobile: New transfer sticks to the bottom, above the safe area. */
+.cta-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  bottom: 0;
+  left: 0;
+  padding: var(--space-3) var(--gutter-mobile)
+    calc(var(--space-3) + env(safe-area-inset-bottom));
+  position: fixed;
+  right: 0;
+  z-index: var(--z-header);
+}
+
+.cta-bar .button {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .dashboard {
+    padding-bottom: 0;
+  }
+
+  .dashboard__title {
+    font-size: var(--text-3xl);
+  }
+
+  .cta-bar {
+    background: none;
+    border: 0;
+    padding: 0;
+    position: static;
+    /* A flex item with a z-index forms a stacking context even when static,
+       and would paint over the sticky header. */
+    z-index: auto;
+  }
+
+  .cta-bar .button {
+    width: auto;
+  }
+
+  /* On the hero, a brand button would vanish into the brand gradient: use
+     the hero's own pair of tokens instead. */
+  .balance-hero .cta-bar .button {
+    background: var(--on-hero);
+    color: var(--hero-from);
+  }
+
+  /* Fade rather than swap colours: the pair stays readable in every theme. */
+  .balance-hero .cta-bar .button:hover {
+    opacity: 0.9;
+  }
+
+  .balance-hero__top {
+    /* Room for the button, so the row is the same height before and after
+       the data loads. */
+    min-height: var(--tap-target);
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard__grid {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+/* ---- Total available ---- */
+
+.balance-hero {
+  background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  color: var(--on-hero);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+}
+
+.balance-hero__top {
+  align-items: center;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+}
+
+/* --focus-ring is the brand colour, invisible on the brand gradient. */
+.balance-hero :focus-visible {
+  outline-color: var(--on-hero);
+}
+
+.balance-hero__label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.balance-hero__amount {
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+.balance-hero__caption {
+  font-size: var(--text-sm);
+}
+
+/* ---- Accounts ---- */
+
+.account-list {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .account-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.account-card {
+  display: grid;
+  gap: var(--space-1);
+  grid-template-areas:
+    'name   number'
+    'balance label';
+  grid-template-columns: 1fr auto;
+}
+
+.account-card__name {
+  font-weight: var(--weight-semibold);
+  grid-area: name;
+}
+
+.account-card__number {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  grid-area: number;
+  text-align: right;
+}
+
+.account-card__balance {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  grid-area: balance;
+}
+
+.account-card__label {
+  align-self: center;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  grid-area: label;
+  text-align: right;
+}
+
+/* In three narrow columns, stack everything instead. */
+@media (min-width: 640px) {
+  .account-card {
+    grid-template-areas: 'name' 'number' 'balance' 'label';
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .account-card__number,
+  .account-card__label {
+    text-align: left;
+  }
+}
+
+/* ---- Transactions ---- */
+
+.transactions__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.transactions__header .section-title {
+  margin-bottom: 0;
+}
+
+@media (min-width: 640px) {
+  .transactions__header {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .transactions__header .search-input {
+    max-width: 280px;
+  }
+}
+
+.transactions__count {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  min-height: calc(var(--text-sm) * var(--leading-normal));
+  margin: var(--space-2) 0;
+}
+
+.transactions__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.txn {
+  align-items: center;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  min-height: 64px;
+  padding: var(--space-3) 0;
+}
+
+.txn:first-child {
+  border-top: 0;
+}
+
+.txn__main {
+  min-width: 0;
+}
+
+.txn__description {
+  font-weight: var(--weight-medium);
+}
+
+.txn__meta {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* One line each, so every row has the same height as its skeleton on
+   narrow screens too. The full text stays in the DOM for screen readers. */
+.txn__description,
+.txn__meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.txn__side {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-2);
+}
+
+.txn__amount {
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+.txn__amount--in {
+  color: var(--positive);
+}
+
+.chip {
+  background: var(--warning-soft);
+  border-radius: var(--radius-full);
+  color: var(--warning);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
+  padding: 0 var(--space-2);
+}
+
+/* ---- Daily limit ---- */
+
+.daily-limit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.daily-limit .section-title {
+  margin-bottom: 0;
+}
+
+.daily-limit__remaining {
+  display: flex;
+  flex-direction: column;
+}
+
+.daily-limit__amount {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+}
+
+.daily-limit__caption {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.daily-limit__note {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.progress {
+  background: var(--surface-muted);
+  border-radius: var(--radius-full);
+  height: var(--space-2);
+  overflow: hidden;
+}
+
+.progress__bar {
+  background: var(--brand);
+  height: 100%;
+}
+
+/* ---- Error ---- */
+
+.dashboard-error {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-8) auto;
+  max-width: 480px;
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+}
+
+.dashboard-error__message {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+}

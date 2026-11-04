@@ -1,0 +1,52 @@
+.search-input {
+  align-items: center;
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.search-input__icon {
+  color: var(--text-subtle);
+  left: var(--space-3);
+  pointer-events: none;
+  position: absolute;
+}
+
+.search-input__field {
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text);
+  min-height: var(--tap-target);
+  padding: 0 var(--tap-target) 0 calc(var(--space-3) + 18px + var(--space-2));
+  width: 100%;
+}
+
+.search-input__field::placeholder {
+  color: var(--text-subtle);
+}
+
+/* We render our own clear button. */
+.search-input__field::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.search-input__clear {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: var(--tap-target);
+  justify-content: center;
+  position: absolute;
+  right: 0;
+  width: var(--tap-target);
+}
+
+.search-input__clear:hover {
+  color: var(--text);
+}
