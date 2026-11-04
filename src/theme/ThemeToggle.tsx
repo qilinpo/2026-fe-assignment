@@ -1,20 +1,18 @@
+import { IconButton } from '../components/IconButton'
 import { useTheme } from './preferences'
-import './toggles.css'
 
 export function ThemeToggle() {
   const [theme, setTheme] = useTheme()
   const isDark = theme === 'dark'
 
   return (
-    <button
-      type="button"
-      className="icon-button"
+    <IconButton
       aria-label="Dark mode"
       aria-pressed={isDark}
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
     >
       {isDark ? <MoonIcon /> : <SunIcon />}
-    </button>
+    </IconButton>
   )
 }
 
