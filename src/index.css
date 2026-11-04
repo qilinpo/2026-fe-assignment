@@ -1,6 +1,8 @@
 @import '../brief/design-tokens.css';
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -15,7 +17,9 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
+  font-size: var(--text-base);
   line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -25,54 +29,66 @@ textarea {
   font: inherit;
 }
 
-code {
-  background: var(--surface-muted);
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-  padding: 0.1em 0.35em;
+h1,
+h2,
+h3,
+p {
+  margin: 0;
 }
 
-.starter {
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Money and account numbers line up in columns. */
+.amount {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* ---- Layout ---- */
+
+.container {
   margin: 0 auto;
-  max-width: 720px;
-  padding: var(--space-8) var(--space-4);
+  max-width: calc(var(--container) + 2 * var(--gutter-mobile));
+  padding: 0 var(--gutter-mobile);
+  width: 100%;
 }
 
-.starter-header {
-  align-items: baseline;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: var(--space-4);
-  justify-content: space-between;
-  padding-bottom: var(--space-3);
-}
-
-.starter-header strong {
-  font-size: var(--text-lg);
-}
-
-.starter-header span {
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-}
-
-.starter-main {
+.app-main {
+  padding-bottom: var(--space-8);
   padding-top: var(--space-6);
 }
 
-.starter-main h1 {
-  font-size: var(--text-2xl);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
+@media (min-width: 640px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .container {
+    max-width: calc(var(--container) + 2 * var(--gutter));
+    padding: 0 var(--gutter);
+  }
 }
 
-.starter-main p,
-.starter-main li {
-  color: var(--text-muted);
-}
-
-.status {
-  color: var(--positive);
-  font-weight: var(--weight-semibold);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
