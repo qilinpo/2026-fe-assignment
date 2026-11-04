@@ -21,27 +21,30 @@ export function Dashboard({ onNewTransfer }: DashboardProps) {
 
   return (
     <div className="dashboard" aria-busy={isLoading}>
-      <div className="dashboard__intro">
-        <div className="dashboard__greeting">
-          <h1 className="dashboard__title">
-            Good evening,{' '}
-            {customer ? customer.firstName : <Skeleton width="3ch" />}
-          </h1>
-          {/* Below 640px the header has no room for the switch. */}
-          <SegmentSwitch className="mobile-only" />
-        </div>
-
-        <div className="cta-bar">
-          <Button onClick={onNewTransfer}>
-            <PlusIcon />
-            New transfer
-          </Button>
-        </div>
+      <div className="dashboard__greeting">
+        <h1 className="dashboard__title">
+          Good evening,{' '}
+          {customer ? customer.firstName : <Skeleton width="3ch" />}
+        </h1>
+        {/* Below 640px the header has no room for the switch. */}
+        <SegmentSwitch className="mobile-only" />
       </div>
 
       <div className="dashboard__grid">
         <div className="dashboard__main">
-          <BalanceHero accounts={accounts} />
+          <BalanceHero
+            accounts={accounts}
+            action={
+              // In the Total available row (wireframe); fixed to the bottom
+              // of the screen on mobile.
+              <div className="cta-bar">
+                <Button onClick={onNewTransfer}>
+                  <PlusIcon />
+                  New transfer
+                </Button>
+              </div>
+            }
+          />
           <AccountList accounts={accounts} />
           <TransactionList transactions={transactions} />
         </div>

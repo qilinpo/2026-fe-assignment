@@ -1,16 +1,26 @@
+import type { ReactNode } from 'react'
 import type { Account } from '../../api/types'
 import { Skeleton } from '../../components/Skeleton'
 import { depositAccounts, totalAvailable } from '../../lib/accounts'
 import { formatMoney } from '../../lib/format'
 
-export function BalanceHero({ accounts }: { accounts: Account[] | undefined }) {
+interface BalanceHeroProps {
+  accounts: Account[] | undefined
+  /** Shown at the end of the "Total available" row. */
+  action?: ReactNode
+}
+
+export function BalanceHero({ accounts, action }: BalanceHeroProps) {
   const depositCount = accounts ? depositAccounts(accounts).length : 0
 
   return (
     <section className="balance-hero" aria-labelledby="total-available-heading">
-      <h2 id="total-available-heading" className="balance-hero__label">
-        Total available
-      </h2>
+      <div className="balance-hero__top">
+        <h2 id="total-available-heading" className="balance-hero__label">
+          Total available
+        </h2>
+        {action}
+      </div>
       <p className="balance-hero__amount amount">
         {accounts ? (
           formatMoney(totalAvailable(accounts))

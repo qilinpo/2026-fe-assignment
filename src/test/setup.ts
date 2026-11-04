@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, configure } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, beforeEach } from 'vitest'
+import { setDemoScenario } from '../debug/demoScenario'
 import { handlers, resetMockDb } from '../mocks/handlers'
 import './dialogPolyfill'
 
@@ -16,6 +17,7 @@ afterEach(() => {
   // RTL only auto-cleans when Vitest globals are on; they aren't here.
   cleanup()
   server.resetHandlers()
+  setDemoScenario('normal')
   // Theme/segment preferences live on <html> and in localStorage.
   localStorage.clear()
   delete document.documentElement.dataset.theme

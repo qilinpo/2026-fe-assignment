@@ -3,6 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query'
+import { withDemoParams } from '../debug/demoScenario'
 import { apiFetch } from './client'
 import type {
   AccountsResponse,
@@ -36,7 +37,7 @@ export const queryKeys = {
 export const customerQuery = queryOptions({
   queryKey: queryKeys.customer,
   queryFn: ({ signal }) =>
-    apiFetch<CustomerResponse>('/api/customer', { signal }).then(
+    apiFetch<CustomerResponse>(withDemoParams('/api/customer'), { signal }).then(
       (res) => res.customer,
     ),
 })
@@ -44,7 +45,7 @@ export const customerQuery = queryOptions({
 export const accountsQuery = queryOptions({
   queryKey: queryKeys.accounts,
   queryFn: ({ signal }) =>
-    apiFetch<AccountsResponse>('/api/accounts', { signal }).then(
+    apiFetch<AccountsResponse>(withDemoParams('/api/accounts'), { signal }).then(
       (res) => res.accounts,
     ),
 })
@@ -54,7 +55,7 @@ export function transactionsQuery(params: TransactionsParams = {}) {
     queryKey: queryKeys.transactionList(params),
     queryFn: ({ signal }) =>
       apiFetch<TransactionsResponse>(
-        `/api/transactions${toSearch(params)}`,
+        withDemoParams(`/api/transactions${toSearch(params)}`),
         { signal },
       ),
   })
@@ -63,7 +64,7 @@ export function transactionsQuery(params: TransactionsParams = {}) {
 export const payeesQuery = queryOptions({
   queryKey: queryKeys.payees,
   queryFn: ({ signal }) =>
-    apiFetch<PayeesResponse>('/api/payees', { signal }).then(
+    apiFetch<PayeesResponse>(withDemoParams('/api/payees'), { signal }).then(
       (res) => res.payees,
     ),
 })

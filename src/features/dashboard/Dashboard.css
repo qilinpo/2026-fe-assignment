@@ -8,13 +8,6 @@
   padding-bottom: calc(var(--tap-target) + var(--space-8) + env(safe-area-inset-bottom));
 }
 
-.dashboard__intro {
-  align-items: flex-end;
-  display: flex;
-  gap: var(--space-4);
-  justify-content: space-between;
-}
-
 .dashboard__greeting {
   align-items: flex-start;
   display: flex;
@@ -80,13 +73,31 @@
     border: 0;
     padding: 0;
     position: static;
-    /* .cta-bar is a flex item, and flex items with a z-index form a stacking
-       context even when static — it would paint over the sticky header. */
+    /* A flex item with a z-index forms a stacking context even when static,
+       and would paint over the sticky header. */
     z-index: auto;
   }
 
   .cta-bar .button {
     width: auto;
+  }
+
+  /* On the hero, a brand button would vanish into the brand gradient: use
+     the hero's own pair of tokens instead. */
+  .balance-hero .cta-bar .button {
+    background: var(--on-hero);
+    color: var(--hero-from);
+  }
+
+  /* Fade rather than swap colours: the pair stays readable in every theme. */
+  .balance-hero .cta-bar .button:hover {
+    opacity: 0.9;
+  }
+
+  .balance-hero__top {
+    /* Room for the button, so the row is the same height before and after
+       the data loads. */
+    min-height: var(--tap-target);
   }
 }
 
@@ -108,6 +119,18 @@
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-6);
+}
+
+.balance-hero__top {
+  align-items: center;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+}
+
+/* --focus-ring is the brand colour, invisible on the brand gradient. */
+.balance-hero :focus-visible {
+  outline-color: var(--on-hero);
 }
 
 .balance-hero__label {

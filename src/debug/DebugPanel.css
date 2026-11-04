@@ -1,0 +1,65 @@
+.debug-panel {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: var(--text-sm);
+  left: var(--space-4);
+  max-width: 240px;
+  position: fixed;
+  /* Above the fixed New transfer bar on mobile. */
+  bottom: calc(var(--tap-target) + 2 * var(--space-3) + var(--space-4) + env(safe-area-inset-bottom));
+  z-index: var(--z-toast);
+}
+
+.debug-panel summary {
+  cursor: pointer;
+  font-weight: var(--weight-semibold);
+  min-height: var(--tap-target);
+  padding: var(--space-3) var(--space-4);
+}
+
+.debug-panel fieldset {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0 var(--space-4);
+}
+
+.debug-panel legend {
+  color: var(--text-muted);
+  margin-bottom: var(--space-1);
+  padding: 0;
+}
+
+.debug-panel label {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-2);
+  min-height: 32px;
+}
+
+.debug-panel input {
+  accent-color: var(--brand);
+}
+
+.debug-panel p {
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-4) var(--space-3);
+}
+
+.debug-panel code {
+  background: var(--surface-muted);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  padding: 0 0.3em;
+}
+
+@media (min-width: 640px) {
+  .debug-panel {
+    bottom: var(--space-4);
+  }
+}
