@@ -1,14 +1,21 @@
 import { waitFor } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import { money } from '../../test/money'
+import { server } from '../../test/setup'
 import { openTransfer, recordTransferRequests } from '../../test/transferHelpers'
 
-/** The element an input's aria-describedby points at contains `text`. */
-function expectDescribedBy(input: HTMLElement, text: string) {
-  const ids = input.getAttribute('aria-describedby')?.split(' ') ?? []
-  const descriptions = ids.map((id) => document.getElementById(id)?.textContent ?? '')
-  // Same whitespace normalisation as Testing Library (see test/money.ts).
-  expect(descriptions.join(' ').replace(/\s+/g, ' ')).toContain(text)
+/**
+ * The control's accessible description — what a screen reader announces with
+ * it, computed from aria-describedby — contains `text` (T8).
+ */
+function expectDescribedBy(control: HTMLElement, text: string) {
+  expect(control).toHaveAccessibleDescription({
+    // Collapse Intl's non-breaking spaces, like Testing Library's text
+    // matchers do (see test/money.ts).
+    asymmetricMatch: (actual: string) => actual.replace(/\s+/g, ' ').includes(text),
+    toString: () => `description containing "${text}"`,
+  })
 }
 
 describe('transfer form — recipient', () => {
@@ -35,6 +42,24 @@ describe('transfer form — recipient', () => {
     expect(t.inDialog.getAllByRole('radio')).toHaveLength(2)
     expect(t.inDialog.getByRole('radio', { name: /Priya Nair/ })).toBeInTheDocument()
     expect(t.inDialog.getByRole('radio', { name: 'Send to someone new' })).toBeInTheDocument()
+  })
+
+  it('offers Retry when payees fail to load, and still allows someone new', async () => {
+    server.use(
+      http.get(
+        '*/api/payees',
+        () => HttpResponse.json({ error: { code: 'INTERNAL_ERROR', message: 'Down' } }, { status: 500 }),
+        { once: true },
+      ),
+    )
+    const t = await openTransfer()
+
+    expect(await t.inDialog.findByText("We couldn't load your saved payees.")).toBeInTheDocument()
+    expect(t.inDialog.getByRole('radio', { name: 'Send to someone new' })).toBeInTheDocument()
+
+    await t.user.click(t.inDialog.getByRole('button', { name: 'Retry' }))
+
+    expect(await t.inDialog.findByRole('radio', { name: /Jamie Tan/ })).toBeInTheDocument()
   })
 
   it('validates new-recipient details and focuses the first invalid field', async () => {
@@ -84,8 +109,7 @@ describe('transfer form — amount', () => {
     expectDescribedBy(t.amount, 'Use at most 2 decimal places.')
   })
 
-  // E4 #1
-  it('blocks an amount over the balance and sends no request', async () => {
+  it('E4 #1: an amount over the balance shows the error and sends no request', async () => {
     const requests = recordTransferRequests()
     const t = await toAmountStep()
 

@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import { money } from '../../test/money'
@@ -14,6 +14,32 @@ function transactionRows() {
 }
 
 describe('dashboard', () => {
+  it('D1: requests customer, accounts and transactions in parallel, with placeholders meanwhile', async () => {
+    const events: string[] = []
+    server.events.on('request:start', ({ request }) => {
+      events.push(`start ${new URL(request.url).pathname}${new URL(request.url).search}`)
+    })
+    server.events.on('response:mocked', ({ request }) => {
+      events.push(`end ${new URL(request.url).pathname}`)
+    })
+    renderApp()
+
+    const page = screen.getByRole('heading', { level: 1 }).closest('[aria-busy]')
+    expect(page).toHaveAttribute('aria-busy', 'true')
+    expect(screen.queryByText(money(17120.55))).not.toBeInTheDocument()
+
+    await screen.findByText(money(17120.55))
+    await waitFor(() => expect(page).toHaveAttribute('aria-busy', 'false'))
+
+    // All three requests went out before the first response came back.
+    const firstEnd = events.findIndex((e) => e.startsWith('end'))
+    expect(events.slice(0, firstEnd).sort()).toEqual([
+      'start /api/accounts',
+      'start /api/customer',
+      'start /api/transactions?limit=8',
+    ])
+  })
+
   it('shows the total, accounts and the 8 newest transactions', async () => {
     renderApp()
 
@@ -61,7 +87,32 @@ describe('dashboard', () => {
     expect(search).toHaveFocus()
   })
 
-  it('shows an error when loading fails, and Retry loads the dashboard', async () => {
+  it('clears the search with the ✕ button and with Esc', async () => {
+    const { user } = renderApp()
+    await screen.findByText('FairPrice Finest')
+    const search = screen.getByRole('searchbox', { name: 'Search transactions' })
+
+    await user.type(search, 'grab')
+    await user.click(screen.getByRole('button', { name: 'Clear search text' }))
+    expect(search).toHaveValue('')
+    expect(transactionRows()).toHaveLength(8)
+
+    await user.type(search, 'grab')
+    await user.keyboard('{Escape}')
+    expect(search).toHaveValue('')
+    expect(transactionRows()).toHaveLength(8)
+  })
+
+  it('says so when there are no transactions at all', async () => {
+    server.use(
+      http.get('*/api/transactions', () => HttpResponse.json({ transactions: [], total: 0 })),
+    )
+    renderApp()
+
+    expect(await screen.findByText('No transactions yet.')).toBeInTheDocument()
+  })
+
+  it('E4 #3: a failed dashboard request shows the error, and Retry loads it', async () => {
     server.use(
       http.get(
         '*/api/accounts',

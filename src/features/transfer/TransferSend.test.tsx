@@ -26,8 +26,7 @@ function failNextTransfer(status: number, body: object) {
 }
 
 describe('sending a transfer', () => {
-  // E4 #2
-  it('shows the success screen and the dashboard updates', async () => {
+  it('E4 #2: a successful transfer shows the success screen and the dashboard updates', async () => {
     const requests = recordTransferRequests()
     const t = await goToReview({ amount: '120', note: 'Dinner' })
 
@@ -81,8 +80,7 @@ describe('sending a transfer', () => {
     expect(requests).toHaveLength(1)
   })
 
-  // T7
-  it('stays on review with the data intact when sending fails, and can retry', async () => {
+  it('T7: stays on review with the data intact when sending fails, and can retry', async () => {
     failNextTransfer(500, {
       error: { code: 'INTERNAL_ERROR', message: "Something went wrong. Your money hasn't left your account." },
     })
