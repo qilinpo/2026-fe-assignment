@@ -354,6 +354,84 @@ html:has(.transfer-dialog[open]) {
   padding: var(--space-3) var(--space-4);
 }
 
+/* ---- Send error ---- */
+
+.send-error {
+  background: var(--negative-soft);
+  border: 1px solid var(--negative);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+}
+
+.send-error p {
+  font-weight: var(--weight-semibold);
+}
+
+.send-error ul {
+  font-size: var(--text-sm);
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+/* ---- Success ---- */
+
+.success-panel {
+  align-items: center;
+  text-align: center;
+}
+
+.success-panel__icon {
+  align-items: center;
+  background: var(--positive-soft);
+  border-radius: var(--radius-full);
+  color: var(--positive);
+  display: inline-flex;
+  height: 64px;
+  justify-content: center;
+  width: 64px;
+}
+
+.success-panel__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+}
+
+.success-panel__amount {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+.success-panel__recipient,
+.success-panel__note {
+  color: var(--text-muted);
+}
+
+.success-panel__reference {
+  background: var(--surface-muted);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  width: 100%;
+}
+
+.success-panel__reference dt {
+  color: var(--text-muted);
+}
+
+.success-panel__reference dd {
+  font-weight: var(--weight-semibold);
+  margin: 0;
+}
+
 /* ---- Stepper ---- */
 
 .stepper {

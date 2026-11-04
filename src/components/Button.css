@@ -13,7 +13,8 @@
   white-space: nowrap;
 }
 
-.button:disabled {
+.button:disabled,
+.button[aria-disabled='true'] {
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -27,11 +28,11 @@
   color: var(--on-brand);
 }
 
-.button--primary:hover:not(:disabled) {
+.button--primary:hover:not(:disabled, [aria-disabled='true']) {
   background: var(--brand-hover);
 }
 
-.button--primary:active:not(:disabled) {
+.button--primary:active:not(:disabled, [aria-disabled='true']) {
   background: var(--brand-active);
 }
 
@@ -41,7 +42,7 @@
   color: var(--text);
 }
 
-.button--secondary:hover:not(:disabled) {
+.button--secondary:hover:not(:disabled, [aria-disabled='true']) {
   background: var(--surface-muted);
 }
 
@@ -50,6 +51,6 @@
   color: var(--brand);
 }
 
-.button--ghost:hover:not(:disabled) {
+.button--ghost:hover:not(:disabled, [aria-disabled='true']) {
   background: var(--brand-soft);
 }
